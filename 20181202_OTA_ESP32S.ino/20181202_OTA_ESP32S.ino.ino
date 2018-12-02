@@ -15,8 +15,8 @@ MCU：ESP32S www.doit.aw
 #include <WiFiUdp.h>
 #include <ArduinoOTA.h>
 
-const char* ssid = "leecw_PC";
-const char* password = "Qazxsw1234";
+const char* ssid = "your ssid";
+const char* password = "your password";
 unsigned long previousMillis = 0;        // will store last time LED was updated
 
 // constants won't change:
