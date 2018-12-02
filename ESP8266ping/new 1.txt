@@ -1,0 +1,161 @@
+一個一個零件買來拼裝起來從成本觀念來看，自己做根本不划算，但是所獲得的知識不少，整體看起來是值得了
+至少獲得下列知識：
+1. ESP8266 的控制
+2. NTP Clock的掌握度
+3. DHT22溫度/溼度 SENSOR的掌控
+進而衍生出同事的需求，當中華電信的AP當掉時不用自己發現不能上網再親自去重開AP的麻煩
+http://goods.ruten.com.tw/item/show?21652913259836 Wemos D1 ESP8266 175元
+http://goods.ruten.com.tw/item/show?21623851836623 DHT22 150 元
+http://goods.ruten.com.tw/item/show?21550355556709 IIC LCD 115元
+http://goods.ruten.com.tw/item/show?21811769003985 LCD架 40元
+http://goods.ruten.com.tw/item/show?21735013803474 Relay 45元
+
+關於NTP的解釋
+http://www.stdtime.gov.tw/chinese/bulletin/NTP%20promo.txt
+
+各位網路使用者，您好;
+
+我們是中華電信研究所時間與頻率國家標準實驗室。本實驗室接受經濟部標準檢
+驗局委託，負責維持頻率及時刻之國家標準，並推廣標準時頻之
+應用。目前與國際度量衡局（BIPM）下46個國家時頻實驗室共同維持世界協調時
+（世界標準時間）。
+
+對國內應用推廣方面，我們每年負責校正其他實驗室及精密儀器公司之頻率震盪
+器。除此之外，我們也以下列方法對一般大眾提供服務
+
+1. 5MHz及15 MHz之間的標準時頻廣播。
+2. 117語音報時服務
+3.撥接式電腦校時服務（撥接電話為03 4245117，使用協議： 
+1200，2400，4800，9600bps非奇偶校驗，8個數據位，1個停止位）
+您可以在http://www.stdtime.gov.tw上看到相關消息。
+	
+另外，我們在86年底設立了NTP（網絡時間協議，見RFC 1305），並
+且在87年5月開始，使用一條256K的數據專線及透過電信研究所對外的數據專線（T1）
+提供服務來提供時間校對的服務。有鑑於使用者日眾，新設一專線以服務更多使
+用者，目前使用之服務器網址是
+
+	tock.stdtime.gov.tw
+	watch.stdtime.gov.tw
+	time.stdtime.gov.tw
+	clock.stdtime.gov.tw	
+	tick.stdtime.gov.tw
+
+
+原先提供服務的time.chttl.com.tw，time_a.chttl.com.tw停用。
+
+我們使用七個原子鐘所產生的國家標準頻率，經過時間碼產生器產生時間標準信
+號，再輸入原級（主要NTP服務器），產生網路上可使用的時間信號
+（請見RFC 1305），與國家標準時刻之時刻差維持在百萬分之五秒（五微秒）
+左右。同時以二階伺服器與原級NTP伺服器校時後也對外提供服務，時刻差與原
+級伺服器保持在千分之五秒（5毫秒）左右。您的服務器或工作站，個人電腦安
+裝後，可使您電腦系統之時刻與國家標準同步在0.02-0.1秒之內
+（視網路連線狀況而定）。
+
+您可以在http://www.stdtime.gov.tw或http://www.ntp.org找到相關資料
+
+
+
+
+■校時程式
+
+客戶端
+
+※Win95 / 98 / NT / 2000 / XP
+
+我們提供了一個中文化程式
+http://www.stdtime.gov.tw/chinese/EXE/NTPClock.exe
+英文版
+http://www.stdtime.gov.tw/chinese/EXE/NTPClockeng.exe
+使用SNTP（簡單網絡時間協議）
+
+
+※UNIX：
+一般UNIX（OSF，AIX，HPUX，Linux ....）皆有內建ntp客戶端及服務器程式，
+請執行ntpdate（服務器地址）來校時，也可至http://www.ntp.org下載最
+新版的ntp程式（ntp 4.xxtar.gz），以cc或gcc編譯。
+
+
+
+服務器端
+
+※UNIX：
+同樣可以使用UNIX內建的服務器程序，請尋找ntpd或xntpd這兩個守護進程，
+編輯好ntp.conf後執行ntpd -c ntp.conf即可，
+也可至http://www.ntp.org下載最新版的ntp程式（ntp 4.xxtar.gz），以
+立方厘米或GCC編譯再執行。
+
+
+※WinNT / 2000：
+您可以直接編譯xntp3-5.93.tar.gz或ntp-4.xxtar.gz，但需要下列檔案
+1. VC ++ 5.0
+2.用於WinNT 4.0的SDK
+3.用於Win32的Perl5
+1,2項請自行購買，第三項可在http://www.perl.org中找到。
+
+如果自行編譯覺得麻煩，在
+ftp://ftp.drcoffsite.com中有已編譯好的執行檔，請以username：ftpguest
+passwd：guest進入文件：xntp3-5_90_3-gui.zip
+解壓縮後直接安裝，編輯的ntp.conf後再重開機即可。
+
+
+
+若您設定的是Server，請在ntp.conf下加入
+
+服務器tick.stdtime.gov.tw
+服務器tock.stdtime.gov.tw
+服務器time.stdtime.gov.tw
+服務器clock.stdtime.gov.tw
+服務器watch.stdtime.gov.tw
+
+如此才能同步到我們的服務器。
+
+
+附錄; ntp.conf範例及解說
+
+＃
+＃NTP配置文件（ntp.conf）
+＃
+＃服務器從UTC（TL）。使用標準時間信號，和國家標準時間差不超過5毫秒，
+＃另外附加美國NIST及USNO的NTP服務器，若您同時連上這些服務器，ntpd 
+＃會自動選擇最佳的服務器校時，並防止任一服務器當機造成損失
+＃
+服務器tick.stdtime.gov.tw更喜歡
+服務器tock.stdtime.gov.tw喜歡
+服務器time.stdtime.gov.tw更喜歡
+服務器clock.stdtime.gov.tw
+服務器watch.stdtime.gov.tw
+
+＃
+＃服務器從NIST和USNO。這是NIST（美國國家標準局）及USNO
+＃（美國海軍天文台）的Server。由於server設在美國，網路延遲並不固定
+＃一般設定上述服務器已足夠。
+＃
+服務器192.43.244.18＃time.nist.gov（ACTS）
+服務器132.163.135.130＃time-A.timefreq.bldrdoc.gov（ACTS）
+服務器192.5.41.40＃tick.usno.navy.mil
+＃
+＃階層2同齡人。每個服務器都應該粘貼其中的所有其他服務器
+＃這部份可以設定您自己local的機器，在lan間可互相比較並作監測。
+＃
+peer peer.address.1
+peer peer.address.2
+＃
+＃雜項可用可不用
+＃
+啟用授權監視器＃允許監視器
+driftfile \ etc \ ntp.drift＃記載您機器系統時鐘的性能
+statsdir \ home \ ntp \ status \＃記錄連線狀態
+filegen peerstats文件peerstats鍵入日期啟用
+filegen loopstats文件loopstats鍵入日期啟用
+filegen clockstats文件clockstats鍵入日期啟用
+＃
+＃認證的東西。請注意不同的認證延遲
+＃VAX和SPARC。
+＃
+密鑰文件的#keys /etc/ntp.keys＃路徑
+#trustedkey 1 2 15＃定義可信密鑰
+#requestkey 15＃鍵（7）用於訪問服務器變量
+#controlkey 15＃鍵（6）用於訪問服務器變量
+#authdelay 0.001501＃認證延遲（VAX）
+#authdelay 0.000073＃認證延遲（SPARC）
+
